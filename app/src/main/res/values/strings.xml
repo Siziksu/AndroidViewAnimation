@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ViewAnimation</string>
+    <string name="products">Products</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="product_description">Short description</string>
+</resources>

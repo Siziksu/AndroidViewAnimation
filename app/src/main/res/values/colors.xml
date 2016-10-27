@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#ff000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="grey_light">#e4e4e4</color>
+    <color name="cardBackground">#ffffffff</color>
+    <color name="background">#212121</color>
+    <color name="hint">#818181</color>
+
+    <color name="buttonPressed">@color/hint</color>
+    <color name="buttonDisabled">@color/hint</color>
+    <color name="buttonFocused">@color/textColorPrimary</color>
+    <color name="buttonDefault">@color/textColorPrimary</color>
+</resources>

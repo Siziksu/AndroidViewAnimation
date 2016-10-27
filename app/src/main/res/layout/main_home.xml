@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="25dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@null"
+            android:textSize="20sp"
+            android:text="@string/products"
+            android:textColor="@drawable/button_text" />
+
+        <Button
+            android:enabled="false"
+            android:id="@+id/profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@null"
+            android:textSize="20sp"
+            android:text="@string/profile"
+            android:textColor="@drawable/button_text" />
+
+        <Button
+            android:enabled="false"
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@null"
+            android:textSize="20sp"
+            android:text="@string/settings"
+            android:textColor="@drawable/button_text" />
+
+        <Button
+            android:enabled="false"
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@null"
+            android:textSize="20sp"
+            android:text="@string/logout"
+            android:textColor="@drawable/button_text" />
+    </LinearLayout>
+</RelativeLayout>

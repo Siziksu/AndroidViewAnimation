@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#536DFE</color>
+    <color name="textColorPrimary">#ffffff</color>
+    <color name="textColorSecondary">#727272</color>
+    <color name="textColorPrimaryInverse">#181818</color>
+    <color name="textColorSecondaryInverse">#383838</color>
+    <color name="toolbarBackground">#AA1976D2</color>
+    <color name="textAccent">@color/colorAccent</color>
+    <color name="textPrice">#89AA1E</color>
+</resources>
