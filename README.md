@@ -36,7 +36,7 @@ animationManager.setWidth(MetricsUtils.get().getWidth())
 
 ## Screenshots
 
-<img src="demo.gif" width="350"/>
+<img src="art/demo.gif" width="350"/>
 
 ## License
     Copyright 2016 Esteban Latre
