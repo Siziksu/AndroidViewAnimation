@@ -1,14 +1,11 @@
 package com.siziksu.va.ui.activity.managers;
 
 import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.view.View;
-
-import com.siziksu.va.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +15,7 @@ public class AnimationManager {
     private boolean animated = false;
     private float scaleFactor = 1f;
     private float position = 0.5f;
+    private float rotationY;
     private float width;
     private float alpha = 1f;
     private boolean rotate;
@@ -32,10 +30,10 @@ public class AnimationManager {
         if (width > 0) {
             if (position != 0) {
                 if (!animated) {
-                    animateFull(view, position, scaleFactor, R.animator.rotate, done);
+                    animateFull(view, done);
                     animated = true;
                 } else {
-                    animateFull(view, 0, 1, R.animator.rotate_back, done);
+                    animateFull(view, done);
                     animated = false;
                 }
             } else {
@@ -44,7 +42,7 @@ public class AnimationManager {
         }
     }
 
-    private void animateFull(View view, float x, float scaleFactor, int animatorXml, Done done) {
+    private void animateFull(View view, Done done) {
         AnimatorSet animation = new AnimatorSet();
         animation.addListener(new AnimatorListenerAdapter() {
 
@@ -57,24 +55,20 @@ public class AnimationManager {
             }
         });
         List<Animator> list = new ArrayList<>();
-        ObjectAnimator translation = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, x * scaleFactor);
+        float scaleFactor = (!animated ? this.scaleFactor : 1);
+        ObjectAnimator translation = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, (!animated ? position : 0) * scaleFactor);
         PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, scaleFactor);
         PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, scaleFactor);
         ObjectAnimator scale = ObjectAnimator.ofPropertyValuesHolder(view, scaleX, scaleY);
         list.add(translation);
         list.add(scale);
         if (rotate) {
-            ObjectAnimator rotate = (ObjectAnimator) AnimatorInflater.loadAnimator(view.getContext(), animatorXml);
-            rotate.setTarget(view);
-            list.add(rotate);
+            ObjectAnimator rotation = ObjectAnimator.ofFloat(view, View.ROTATION_Y, !animated ? rotationY : 0);
+            rotation.start();
+            list.add(rotation);
         }
-        if (alpha < 1f && alpha > 0f) {
-            ObjectAnimator alphaAnimator;
-            if (!animated) {
-                alphaAnimator = ObjectAnimator.ofFloat(view, View.ALPHA, 1, alpha);
-            } else {
-                alphaAnimator = ObjectAnimator.ofFloat(view, View.ALPHA, alpha, 1);
-            }
+        if (alpha <= 1 && alpha > 0) {
+            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(view, View.ALPHA, !animated ? alpha : 1);
             list.add(alphaAnimator);
         }
         animation.playTogether(list);
@@ -91,18 +85,19 @@ public class AnimationManager {
         return this;
     }
 
-    public AnimationManager setScaleFactor(float factor) {
-        this.scaleFactor = factor;
+    public AnimationManager setScaleFactor(float value) {
+        this.scaleFactor = value;
         return this;
     }
 
-    public AnimationManager setRotate3d(boolean value) {
-        this.rotate = value;
+    public AnimationManager setYRotation(float value) {
+        this.rotationY = value;
+        this.rotate = true;
         return this;
     }
 
-    public AnimationManager setAlpha(float alpha) {
-        this.alpha = alpha;
+    public AnimationManager setAlpha(float value) {
+        this.alpha = value;
         return this;
     }
 

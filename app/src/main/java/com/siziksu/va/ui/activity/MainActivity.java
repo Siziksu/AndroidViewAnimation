@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         animationManager.setWidth(MetricsUtils.get().getWidth())
                         .setPositionPercentage(0.5f)
                         .setScaleFactor(0.8f)
-                        .setRotate3d(true);
+                        .setYRotation(-10f);
         adapter = new ProductsAdapter(getApplicationContext(), (view, position) -> {
             Snackbar.make(mainContent, "Product " + (position + 1) + " clicked", Snackbar.LENGTH_SHORT).show();
             if (animationManager.isAnimated()) {
