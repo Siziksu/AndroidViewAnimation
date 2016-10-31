@@ -3,7 +3,7 @@ package com.siziksu.va.common;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 
-public class MetricsUtils {
+public final class MetricsUtils {
 
     private static MetricsUtils instance;
 

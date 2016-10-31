@@ -45,9 +45,9 @@ public final class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.
         return strings.size();
     }
 
-    public void showProducts(List<String> strings) {
-        this.strings.clear();
-        this.strings.addAll(strings);
+    public void showProducts(List<String> products) {
+        strings.clear();
+        strings.addAll(products);
         notifyDataSetChanged();
     }
 
@@ -69,7 +69,9 @@ public final class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.
 
         @Override
         public void onClick(View view) {
-            listener.onClick(view, getAdapterPosition());
+            if (listener != null) {
+                listener.onClick(view, getAdapterPosition());
+            }
         }
     }
 

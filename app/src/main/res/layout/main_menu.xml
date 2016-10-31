@@ -5,15 +5,17 @@
     android:layout_width="match_parent"
     android:background="@color/background">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/mainMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="25dp"
-        android:orientation="vertical">
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@null">
 
         <Button
-            android:id="@+id/products"
+            android:id="@+id/actionProducts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
@@ -21,11 +23,13 @@
             android:background="@null"
             android:textSize="20sp"
             android:text="@string/products"
-            android:textColor="@drawable/button_text" />
+            android:textColor="@drawable/button_text"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/products" />
 
         <Button
-            android:enabled="false"
-            android:id="@+id/profile"
+            android:id="@+id/actionProfile"
+            android:layout_below="@+id/actionProducts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
@@ -33,11 +37,14 @@
             android:background="@null"
             android:textSize="20sp"
             android:text="@string/profile"
-            android:textColor="@drawable/button_text" />
+            android:textColor="@drawable/button_text"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/profile" />
 
         <Button
             android:enabled="false"
-            android:id="@+id/settings"
+            android:id="@+id/actionSettings"
+            android:layout_below="@+id/actionProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
@@ -45,11 +52,14 @@
             android:background="@null"
             android:textSize="20sp"
             android:text="@string/settings"
-            android:textColor="@drawable/button_text" />
+            android:textColor="@drawable/button_text"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/settings" />
 
         <Button
             android:enabled="false"
-            android:id="@+id/logout"
+            android:id="@+id/actionLogout"
+            android:layout_below="@+id/actionSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="15dp"
@@ -57,6 +67,8 @@
             android:background="@null"
             android:textSize="20sp"
             android:text="@string/logout"
-            android:textColor="@drawable/button_text" />
-    </LinearLayout>
+            android:textColor="@drawable/button_text"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/exit" />
+    </RelativeLayout>
 </RelativeLayout>

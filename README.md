@@ -4,7 +4,7 @@ Example of View Animations with ObjectAnimator.
 
 ## About
 
-Example using a `translate`, `scale` and a `rotation3d`. Also can use an `alpha` animation. The animation has a listener for when finishes.
+Example using a `translate`, `scale`, `rotation3d` and `alpha` animations. The animation has a listener for when finishes.
 After animation is applied, the view is fully functional.
 
 Press the toolbar icon to see the animation.
@@ -12,12 +12,11 @@ Press the toolbar icon to see the animation.
 ## Configuration
 
 ```java
-AnimationManager animationManager = new AnimationManager();
-animationManager.setWidth(MetricsUtils.get().getWidth())
-                .setPositionPercentage(0.5f)
-                .setScaleFactor(0.8f)
-                .setAlpha(0.5f)
-                .setRotate3d(true);
+AnimationManager animationManager = new AnimationManager(mainContent, mainMenu, MetricsUtils.get().getMetrics());
+animationManager.setPositionPercentage(0.5f)
+                        .setScaleFactor(0.8f)
+                        .setYRotation(-10f)
+                        .setMenuDelay(250);
 ```
 
 ## Usage
@@ -25,13 +24,13 @@ animationManager.setWidth(MetricsUtils.get().getWidth())
 - Without feedback
 
     ```java
-    animationManager.animateView(view);
+    animationManager.animateView();
     ```
 
 - With feedback
 
     ```java
-    animationManager.animateView(view, () -> Log.i(Constants.TAG, "Animation finished"));
+    animationManager.animateView(() -> Log.i(Constants.TAG, "Animation finished"));
     ```
 
 ## Screenshots

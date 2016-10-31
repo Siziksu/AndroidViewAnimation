@@ -9,22 +9,10 @@
     tools:showIn="@layout/activity_main"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <include layout="@layout/main_home" />
+    <include layout="@layout/main_menu" />
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/mainContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/main_toolbar" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_below="@id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none" />
-    </RelativeLayout>
+        android:layout_height="match_parent" />
 </RelativeLayout>

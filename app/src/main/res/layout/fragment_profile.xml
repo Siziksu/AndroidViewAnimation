@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/main_toolbar" />
+
+        <ImageView
+            android:id="@+id/profileHeader"
+            android:layout_below="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_header" />
+
+        <RelativeLayout
+            android:id="@+id/profileMain"
+            android:layout_below="@+id/profileHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:padding="20dp"
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:id="@+id/userImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:contentDescription="@string/app_name"
+                android:layout_marginEnd="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/user_placeholder" />
+
+            <RelativeLayout
+                android:id="@+id/rowUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/userImage"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/firstNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColorPrimary"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="@string/profile_user_name" />
+
+                <TextView
+                    android:id="@+id/firstNameTextView"
+                    android:layout_below="@+id/firstNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="16sp"
+                    android:text="@string/user_name" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rowUserEmail"
+                android:layout_below="@+id/rowUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/userImage">
+
+                <TextView
+                    android:id="@+id/emailLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColorPrimary"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="@string/profile_email" />
+
+                <TextView
+                    android:id="@+id/emailTextView"
+                    android:layout_below="@+id/emailLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="16sp"
+                    android:text="@string/user_email" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/profileText"
+            android:layout_below="@+id/profileMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:textColor="@color/textColorPrimaryInverse"
+            android:textSize="16sp"
+            android:text="@string/lorem_ipsum" />
+    </RelativeLayout>
+</ScrollView>

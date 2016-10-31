@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -17,24 +18,29 @@ public class AnimationManager {
     private float position = 0.5f;
     private float rotationY;
     private float width;
-    private float alpha = 1f;
     private boolean rotate;
+    private long menuDelay;
+    private View content;
+    private View menu;
 
-    public AnimationManager() {}
-
-    public void animateView(View view) {
-        animateView(view, null);
+    public AnimationManager(View content, View menu, DisplayMetrics metrics) {
+        this.content = content;
+        this.menu = menu;
+        this.width = metrics.widthPixels;
+        this.menu.setTranslationX(-width);
     }
 
-    public void animateView(View view, Done done) {
+    public void animateViews() {
+        animateViews(null);
+    }
+
+    public void animateViews(Done done) {
         if (width > 0) {
             if (position != 0) {
                 if (!animated) {
-                    animateFull(view, done);
-                    animated = true;
+                    animate(true, done);
                 } else {
-                    animateFull(view, done);
-                    animated = false;
+                    animate(false, done);
                 }
             } else {
                 animated = false;
@@ -42,18 +48,31 @@ public class AnimationManager {
         }
     }
 
-    private void animateFull(View view, Done done) {
-        AnimatorSet animation = new AnimatorSet();
-        animation.addListener(new AnimatorListenerAdapter() {
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                if (done != null) {
-                    done.apply();
-                }
+    private void animate(boolean animated, Done done) {
+        animateContent(content);
+        animateMenu(menu, () -> {
+            if (done != null) {
+                done.apply();
             }
+            this.animated = animated;
         });
+    }
+
+    private void animateMenu(View view, Done done) {
+        AnimatorSet animation = new AnimatorSet();
+        setAnimationCallback(animation, done);
+        List<Animator> list = new ArrayList<>();
+        ObjectAnimator translation = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, !animated ? 0 : -width);
+        list.add(translation);
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(view, View.ALPHA, !animated ? 1 : 0);
+        list.add(alphaAnimator);
+        animation.playTogether(list);
+        animation.setStartDelay(!animated ? menuDelay : 0);
+        animation.start();
+    }
+
+    private void animateContent(View view) {
+        AnimatorSet animation = new AnimatorSet();
         List<Animator> list = new ArrayList<>();
         float scaleFactor = (!animated ? this.scaleFactor : 1);
         ObjectAnimator translation = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, (!animated ? position : 0) * scaleFactor);
@@ -67,17 +86,8 @@ public class AnimationManager {
             rotation.start();
             list.add(rotation);
         }
-        if (alpha <= 1 && alpha > 0) {
-            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(view, View.ALPHA, !animated ? alpha : 1);
-            list.add(alphaAnimator);
-        }
         animation.playTogether(list);
         animation.start();
-    }
-
-    public AnimationManager setWidth(float width) {
-        this.width = width;
-        return this;
     }
 
     public AnimationManager setPositionPercentage(float percent) {
@@ -96,8 +106,8 @@ public class AnimationManager {
         return this;
     }
 
-    public AnimationManager setAlpha(float value) {
-        this.alpha = value;
+    public AnimationManager setMenuDelay(long menuDelay) {
+        this.menuDelay = menuDelay;
         return this;
     }
 
@@ -105,9 +115,22 @@ public class AnimationManager {
         return animated;
     }
 
-    public void setAnimated(View view, boolean animated) {
+    public void setAnimated(boolean animated) {
         if (this.animated != animated) {
-            animateView(view);
+            animateViews();
+        }
+    }
+
+    private void setAnimationCallback(AnimatorSet animation, Done done) {
+        if (done != null) {
+            animation.addListener(new AnimatorListenerAdapter() {
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    done.apply();
+                }
+            });
         }
     }
 
