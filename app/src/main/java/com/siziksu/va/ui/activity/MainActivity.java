@@ -36,9 +36,14 @@ public final class MainActivity extends AppCompatActivity implements IMainView {
         ButterKnife.bind(this);
         MetricsUtils.init(this);
         animationManager = new AnimationManager(mainContent, mainMenu, MetricsUtils.get().getMetrics());
-        animationManager.setPositionPercentage(0.5f)
+        animationManager.setPositionPercentageX(0.5f)
+                        .setPositionPercentageY(0)
+                        .withScaleCorrection(true)
                         .setScaleFactor(0.8f)
-                        .setYRotation(-10f)
+                        .setRotationX(0)
+                        .setRotationY(-10)
+                        .setRotationZ(0)
+                        .setDepth(0)
                         .setMenuDelay(250);
         if (savedInstanceState == null) {
             contentManager.show(ContentManager.PRODUCTS);
@@ -82,7 +87,7 @@ public final class MainActivity extends AppCompatActivity implements IMainView {
 
     @Override
     public void animate() {
-        animationManager.animateViews(() -> Log.i(Constants.TAG, "Animation finished"));
+        animationManager.animate(() -> Log.i(Constants.TAG, "Animation finished"));
     }
 
     @Override

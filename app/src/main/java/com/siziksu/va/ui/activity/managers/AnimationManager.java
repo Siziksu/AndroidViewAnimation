@@ -4,46 +4,53 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.util.DisplayMetrics;
 import android.view.View;
+
+import com.siziksu.va.common.model.RotationInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AnimationManager {
 
+    private static final int MAX_DEGREE = 360;
+
     private boolean animated = false;
     private float scaleFactor = 1f;
-    private float position = 0.5f;
+    private boolean scaleCorrection;
+    private float depth;
+    private float positionX;
+    private float positionY;
+    private float rotationX;
     private float rotationY;
+    private float rotationZ;
     private float width;
-    private boolean rotate;
+    private float height;
     private long menuDelay;
     private View content;
     private View menu;
+    private float density;
 
     public AnimationManager(View content, View menu, DisplayMetrics metrics) {
         this.content = content;
         this.menu = menu;
         this.width = metrics.widthPixels;
+        this.height = metrics.heightPixels;
+        this.density = metrics.density;
         this.menu.setTranslationX(-width);
     }
 
-    public void animateViews() {
-        animateViews(null);
+    public void animate() {
+        animate(null);
     }
 
-    public void animateViews(Done done) {
+    public void animate(Done done) {
         if (width > 0) {
-            if (position != 0) {
-                if (!animated) {
-                    animate(true, done);
-                } else {
-                    animate(false, done);
-                }
+            if (!animated) {
+                animate(true, done);
             } else {
-                animated = false;
+                animate(false, done);
             }
         }
     }
@@ -72,53 +79,59 @@ public class AnimationManager {
     }
 
     private void animateContent(View view) {
+        view.setPivotY(getDistanceToCenterY(view));
+        view.setPivotX(getDistanceToCenterX(view));
+        view.setCameraDistance((depth == 0 ? height : depth) * density);
+        RotationInfo rotationInfo = new RotationInfo();
+        rotationInfo.addView(view);
+        if (!animated) {
+            rotationInfo.setValues(positionX, positionY, rotationX, rotationY, rotationZ, scaleFactor, scaleCorrection);
+            animateMe(rotationInfo);
+        } else {
+            rotationInfo.setValues(0, 0, 0, 0, 0, 1, false);
+            animateMe(rotationInfo);
+        }
+    }
+
+    private void animateMe(RotationInfo rotationInfo) {
         AnimatorSet animation = new AnimatorSet();
         List<Animator> list = new ArrayList<>();
-        float scaleFactor = (!animated ? this.scaleFactor : 1);
-        ObjectAnimator translation = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, (!animated ? position : 0) * scaleFactor);
-        PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, scaleFactor);
-        PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, scaleFactor);
-        ObjectAnimator scale = ObjectAnimator.ofPropertyValuesHolder(view, scaleX, scaleY);
-        list.add(translation);
-        list.add(scale);
-        if (rotate) {
-            ObjectAnimator rotation = ObjectAnimator.ofFloat(view, View.ROTATION_Y, !animated ? rotationY : 0);
-            rotation.start();
-            list.add(rotation);
-        }
+        ObjectAnimator translationX = ObjectAnimator.ofFloat(
+                rotationInfo.getView(),
+                View.TRANSLATION_X,
+                rotationInfo.getPositionX() * (rotationInfo.isScaleCorrection() ? rotationInfo.getScaleFactor() : 1)
+        );
+        ObjectAnimator translationY = ObjectAnimator.ofFloat(
+                rotationInfo.getView(),
+                View.TRANSLATION_Y,
+                rotationInfo.getPositionY() * (rotationInfo.isScaleCorrection() ? rotationInfo.getScaleFactor() : 1)
+        );
+        ObjectAnimator rotationX = ObjectAnimator.ofFloat(rotationInfo.getView(), View.ROTATION_X, rotationInfo.getRotationX());
+        ObjectAnimator rotationY = ObjectAnimator.ofFloat(rotationInfo.getView(), View.ROTATION_Y, rotationInfo.getRotationY());
+        ObjectAnimator rotationZ = ObjectAnimator.ofFloat(rotationInfo.getView(), View.ROTATION, rotationInfo.getRotationZ());
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(rotationInfo.getView(), View.SCALE_X, rotationInfo.getScaleFactor());
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(rotationInfo.getView(), View.SCALE_Y, rotationInfo.getScaleFactor());
+        list.add(translationX);
+        list.add(translationY);
+        list.add(scaleX);
+        list.add(scaleY);
+        list.add(rotationX);
+        list.add(rotationY);
+        list.add(rotationZ);
         animation.playTogether(list);
         animation.start();
     }
 
-    public AnimationManager setPositionPercentage(float percent) {
-        position = width * percent;
-        return this;
+    private static float getDistanceToCenterX(View view) {
+        float viewCenter = view.getLeft() + view.getWidth() / 2f;
+        float rootCenter = ((View) view.getParent()).getWidth() / 2;
+        return view.getWidth() / 2f + rootCenter - viewCenter;
     }
 
-    public AnimationManager setScaleFactor(float value) {
-        this.scaleFactor = value;
-        return this;
-    }
-
-    public AnimationManager setYRotation(float value) {
-        this.rotationY = value;
-        this.rotate = true;
-        return this;
-    }
-
-    public AnimationManager setMenuDelay(long menuDelay) {
-        this.menuDelay = menuDelay;
-        return this;
-    }
-
-    public boolean isAnimated() {
-        return animated;
-    }
-
-    public void setAnimated(boolean animated) {
-        if (this.animated != animated) {
-            animateViews();
-        }
+    private static float getDistanceToCenterY(View view) {
+        float viewCenter = view.getTop() + view.getHeight() / 2f;
+        float rootCenter = ((View) view.getParent()).getHeight() / 2;
+        return view.getHeight() / 2f + rootCenter - viewCenter;
     }
 
     private void setAnimationCallback(AnimatorSet animation, Done done) {
@@ -132,6 +145,61 @@ public class AnimationManager {
                 }
             });
         }
+    }
+
+    public AnimationManager setPositionPercentageX(float value) {
+        positionX = width * (value >= 0 && value <= 1 ? value : 0);
+        return this;
+    }
+
+    public AnimationManager setPositionPercentageY(float value) {
+        positionY = height * (value >= 0 && value <= 1 ? value : 0);
+        return this;
+    }
+
+    public AnimationManager setScaleFactor(float value) {
+        scaleFactor = (value > 0 && value < 1 ? value : 1);
+        return this;
+    }
+
+    public AnimationManager setRotationX(float value) {
+        rotationX = (value >= -MAX_DEGREE && value <= MAX_DEGREE ? value : 0);
+        return this;
+    }
+
+    public AnimationManager setRotationY(float value) {
+        rotationY = (value >= -MAX_DEGREE && value <= MAX_DEGREE ? value : 0);
+        return this;
+    }
+
+    public AnimationManager setRotationZ(float value) {
+        rotationZ = (value >= -MAX_DEGREE && value <= MAX_DEGREE ? value : 0);
+        return this;
+    }
+
+    public AnimationManager setDepth(float value) {
+        depth = (value > 0 && value < 11 ? value * width : width);
+        return this;
+    }
+
+    public AnimationManager setMenuDelay(long value) {
+        menuDelay = value;
+        return this;
+    }
+
+    public boolean isAnimated() {
+        return animated;
+    }
+
+    public void setAnimated(boolean value) {
+        if (animated != value) {
+            animate();
+        }
+    }
+
+    public AnimationManager withScaleCorrection(boolean value) {
+        scaleCorrection = value;
+        return this;
     }
 
     public interface Done {
