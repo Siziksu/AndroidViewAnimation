@@ -4,7 +4,7 @@ Example of View Animations with ObjectAnimator.
 
 ## About
 
-Example using a `translate`, `scale`, `rotation3d` and `alpha` animations. The animation has a listener for when finishes.
+Example using a `translate`, `scale` and `rotation3d` with `depth` animations. The animation has a listener for when finishes.
 After animation is applied, the view is fully functional.
 
 Press the toolbar icon to see the animation.
@@ -12,11 +12,16 @@ Press the toolbar icon to see the animation.
 ## Configuration
 
 ```java
-AnimationManager animationManager = new AnimationManager(mainContent, mainMenu, MetricsUtils.get().getMetrics());
-animationManager.setPositionPercentage(0.5f)
-                        .setScaleFactor(0.8f)
-                        .setYRotation(-10f)
-                        .setMenuDelay(250);
+animationManager = new AnimationManager(mainContent, mainMenu, MetricsUtils.get().getMetrics());
+animationManager.setPositionPercentageX(0.5f)
+                .setPositionPercentageY(0)
+                .withScaleCorrection(true)
+                .setScaleFactor(0.8f)
+                .setRotationX(0)
+                .setRotationY(-10)
+                .setRotationZ(0)
+                .setDepth(0)
+                .setMenuDelay(250);
 ```
 
 ## Usage
@@ -24,13 +29,27 @@ animationManager.setPositionPercentage(0.5f)
 - Without feedback
 
     ```java
-    animationManager.animateView();
+    animationManager.animate();
     ```
 
 - With feedback
 
     ```java
-    animationManager.animateView(() -> Log.i(Constants.TAG, "Animation finished"));
+    animationManager.animate(() -> Log.i(Constants.TAG, "Animation finished"));
+    ```
+
+- If you need to know if the views are already animated
+
+    ```java
+    if (animationManager.isAnimated()) {
+
+    }
+    ```
+    
+- If you need to force the animation, for instance if you are using `onRestoreInstanceState()`
+  
+    ```java
+    animationManager.setAnimated(animated);
     ```
 
 ## Screenshots
