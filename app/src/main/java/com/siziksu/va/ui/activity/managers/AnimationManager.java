@@ -7,7 +7,7 @@ import android.animation.ObjectAnimator;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import com.siziksu.va.common.model.RotationInfo;
+import com.siziksu.va.common.model.AnimationInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,35 +82,35 @@ public class AnimationManager {
         view.setPivotY(getDistanceToCenterY(view));
         view.setPivotX(getDistanceToCenterX(view));
         view.setCameraDistance((depth == 0 ? height : depth) * density);
-        RotationInfo rotationInfo = new RotationInfo();
-        rotationInfo.addView(view);
+        AnimationInfo animationInfo = new AnimationInfo();
+        animationInfo.addView(view);
         if (!animated) {
-            rotationInfo.setValues(positionX, positionY, rotationX, rotationY, rotationZ, scaleFactor, scaleCorrection);
-            animateMe(rotationInfo);
+            animationInfo.setValues(positionX, positionY, rotationX, rotationY, rotationZ, scaleFactor, scaleCorrection);
+            animateMe(animationInfo);
         } else {
-            rotationInfo.setValues(0, 0, 0, 0, 0, 1, false);
-            animateMe(rotationInfo);
+            animationInfo.setValues(0, 0, 0, 0, 0, 1, false);
+            animateMe(animationInfo);
         }
     }
 
-    private void animateMe(RotationInfo rotationInfo) {
+    private void animateMe(AnimationInfo animationInfo) {
         AnimatorSet animation = new AnimatorSet();
         List<Animator> list = new ArrayList<>();
         ObjectAnimator translationX = ObjectAnimator.ofFloat(
-                rotationInfo.getView(),
+                animationInfo.getView(),
                 View.TRANSLATION_X,
-                rotationInfo.getPositionX() * (rotationInfo.isScaleCorrection() ? rotationInfo.getScaleFactor() : 1)
+                animationInfo.getPositionX() * (animationInfo.isScaleCorrection() ? animationInfo.getScaleFactor() : 1)
         );
         ObjectAnimator translationY = ObjectAnimator.ofFloat(
-                rotationInfo.getView(),
+                animationInfo.getView(),
                 View.TRANSLATION_Y,
-                rotationInfo.getPositionY() * (rotationInfo.isScaleCorrection() ? rotationInfo.getScaleFactor() : 1)
+                animationInfo.getPositionY() * (animationInfo.isScaleCorrection() ? animationInfo.getScaleFactor() : 1)
         );
-        ObjectAnimator rotationX = ObjectAnimator.ofFloat(rotationInfo.getView(), View.ROTATION_X, rotationInfo.getRotationX());
-        ObjectAnimator rotationY = ObjectAnimator.ofFloat(rotationInfo.getView(), View.ROTATION_Y, rotationInfo.getRotationY());
-        ObjectAnimator rotationZ = ObjectAnimator.ofFloat(rotationInfo.getView(), View.ROTATION, rotationInfo.getRotationZ());
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(rotationInfo.getView(), View.SCALE_X, rotationInfo.getScaleFactor());
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(rotationInfo.getView(), View.SCALE_Y, rotationInfo.getScaleFactor());
+        ObjectAnimator rotationX = ObjectAnimator.ofFloat(animationInfo.getView(), View.ROTATION_X, animationInfo.getRotationX());
+        ObjectAnimator rotationY = ObjectAnimator.ofFloat(animationInfo.getView(), View.ROTATION_Y, animationInfo.getRotationY());
+        ObjectAnimator rotationZ = ObjectAnimator.ofFloat(animationInfo.getView(), View.ROTATION, animationInfo.getRotationZ());
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(animationInfo.getView(), View.SCALE_X, animationInfo.getScaleFactor());
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(animationInfo.getView(), View.SCALE_Y, animationInfo.getScaleFactor());
         list.add(translationX);
         list.add(translationY);
         list.add(scaleX);

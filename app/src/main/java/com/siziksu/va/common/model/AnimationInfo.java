@@ -2,7 +2,7 @@ package com.siziksu.va.common.model;
 
 import android.view.View;
 
-public class RotationInfo {
+public class AnimationInfo {
 
     private View view;
     private float positionX;
