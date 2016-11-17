@@ -46,7 +46,7 @@ public final class MainActivity extends AppCompatActivity implements IMainView {
                         .setDepth(0)
                         .setMenuDelay(250);
         if (savedInstanceState == null) {
-            contentManager.show(ContentManager.PRODUCTS);
+            contentManager.show(Constants.PRODUCTS_FRAGMENT);
         }
     }
 
@@ -75,13 +75,13 @@ public final class MainActivity extends AppCompatActivity implements IMainView {
 
     @OnClick(R.id.actionProducts)
     public void onProductsClick() {
-        contentManager.show(ContentManager.PRODUCTS);
+        contentManager.show(Constants.PRODUCTS_FRAGMENT);
         animate();
     }
 
     @OnClick(R.id.actionProfile)
     public void onProfileClick() {
-        contentManager.show(ContentManager.PROFILE);
+        contentManager.show(Constants.PROFILE_FRAGMENT);
         animate();
     }
 

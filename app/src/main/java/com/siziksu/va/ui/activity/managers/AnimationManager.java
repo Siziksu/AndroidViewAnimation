@@ -70,8 +70,8 @@ public class AnimationManager {
         setAnimationCallback(animation, done);
         List<Animator> list = new ArrayList<>();
         ObjectAnimator translation = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, !animated ? 0 : -width);
-        list.add(translation);
         ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(view, View.ALPHA, !animated ? 1 : 0);
+        list.add(translation);
         list.add(alphaAnimator);
         animation.playTogether(list);
         animation.setStartDelay(!animated ? menuDelay : 0);

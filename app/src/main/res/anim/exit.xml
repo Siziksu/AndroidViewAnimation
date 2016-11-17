@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shareInterpolator="true"
     android:interpolator="@android:anim/decelerate_interpolator"
-    android:duration="1000">
+    android:duration="500">
     <alpha
         android:fromAlpha="1"
         android:toAlpha="0" />
