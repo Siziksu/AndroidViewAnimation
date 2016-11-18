@@ -1,12 +1,11 @@
 package com.siziksu.va.ui.manager;
 
+import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.siziksu.va.R;
-import com.siziksu.va.common.Constants;
-import com.siziksu.va.ui.fragment.ProductsFragment;
-import com.siziksu.va.ui.fragment.ProfileFragment;
 
 public final class ContentManager {
 
@@ -18,22 +17,16 @@ public final class ContentManager {
         manager = fragmentManager;
     }
 
-    public void show(String fragment) {
-        if (!section.equals(fragment)) {
+    public void show(@IdRes int view, Fragment fragment, String tag, boolean value) {
+        if (!section.equals(tag)) {
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.setCustomAnimations(R.anim.enter, R.anim.exit);
-            switch (fragment) {
-                case Constants.PRODUCTS_FRAGMENT:
-                    transaction.replace(R.id.mainContent, new ProductsFragment(), Constants.PRODUCTS_FRAGMENT).commit();
-                    section = fragment;
-                    break;
-                case Constants.PROFILE_FRAGMENT:
-                    transaction.replace(R.id.mainContent, new ProfileFragment(), Constants.PROFILE_FRAGMENT).commit();
-                    section = fragment;
-                    break;
-                default:
-                    break;
+            transaction.replace(view, fragment, tag);
+            if (value) {
+                transaction.addToBackStack(null);
             }
+            transaction.commit();
+            section = tag;
         }
     }
 

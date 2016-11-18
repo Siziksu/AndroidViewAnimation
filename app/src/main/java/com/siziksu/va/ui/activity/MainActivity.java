@@ -9,6 +9,8 @@ import com.siziksu.va.R;
 import com.siziksu.va.common.Constants;
 import com.siziksu.va.common.MetricsUtils;
 import com.siziksu.va.ui.activity.managers.AnimationManager;
+import com.siziksu.va.ui.fragment.ProductsFragment;
+import com.siziksu.va.ui.fragment.ProfileFragment;
 import com.siziksu.va.ui.manager.ContentManager;
 
 import butterknife.BindView;
@@ -46,7 +48,7 @@ public final class MainActivity extends AppCompatActivity implements IMainView {
                         .setDepth(0)
                         .setMenuDelay(250);
         if (savedInstanceState == null) {
-            contentManager.show(Constants.PRODUCTS_FRAGMENT);
+            contentManager.show(R.id.mainContent, new ProductsFragment(), Constants.PRODUCTS_FRAGMENT, false);
         }
     }
 
@@ -59,9 +61,20 @@ public final class MainActivity extends AppCompatActivity implements IMainView {
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         boolean animated = savedInstanceState.getBoolean(IS_ANIMATED);
-        String section = savedInstanceState.getString(SECTION);
         animationManager.setAnimated(animated);
-        contentManager.show(section);
+        String section = savedInstanceState.getString(SECTION);
+        if (section != null) {
+            switch (section) {
+                case Constants.PRODUCTS_FRAGMENT:
+                    contentManager.show(R.id.mainContent, new ProductsFragment(), Constants.PRODUCTS_FRAGMENT, false);
+                    break;
+                case Constants.PROFILE_FRAGMENT:
+                    contentManager.show(R.id.mainContent, new ProfileFragment(), Constants.PROFILE_FRAGMENT, false);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Override
@@ -75,13 +88,13 @@ public final class MainActivity extends AppCompatActivity implements IMainView {
 
     @OnClick(R.id.actionProducts)
     public void onProductsClick() {
-        contentManager.show(Constants.PRODUCTS_FRAGMENT);
+        contentManager.show(R.id.mainContent, new ProductsFragment(), Constants.PRODUCTS_FRAGMENT, false);
         animate();
     }
 
     @OnClick(R.id.actionProfile)
     public void onProfileClick() {
-        contentManager.show(Constants.PROFILE_FRAGMENT);
+        contentManager.show(R.id.mainContent, new ProfileFragment(), Constants.PROFILE_FRAGMENT, false);
         animate();
     }
 
