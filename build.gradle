@@ -1,16 +1,19 @@
 buildscript {
+    ext.gradlePluginVersion = '3.5.2'
+
     repositories {
+        google()
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+        classpath "com.android.tools.build:gradle:$gradlePluginVersion"
     }
 }
 
 allprojects {
     repositories {
+        google()
         jcenter()
     }
 }
